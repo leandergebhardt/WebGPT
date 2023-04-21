@@ -29,7 +29,13 @@
         <div class="col">
           <button type="button" class="btn btn-dark" id="loadModelButton" onclick="loadModelHandler()" disabled>Load Shakespeare Model</button>
           <button type="button" class="btn btn-dark" id="loadGPT2ModelButton" onclick="loadGPT2ModelHandler()" disabled>Load GPT2 Model</button><br />
+          
           <div class="alert alert-success" role="alert" id="loaded-label">
+          </div>
+          <div class="alert alert-danger" role="alert" id="loaded-error">
+          </div>
+          <div id="loading" class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
         
@@ -68,7 +74,8 @@
           </div>
         </div>
         <br /><br />
-        <div id="output">
+        <div id="output-wrapper">
+          <p id="output"></p>
         </div>
       </div>
     </div>
@@ -99,7 +106,8 @@
         const prompt = document.getElementById("prompt").value || " ";
         const numTokens = tokensInput.value;
 
-        const outputDiv = document.getElementById("output");
+        const outputDiv = document.getElementById("output-wrapper");
+        const output = document.getElementById("output");
         outputDiv.style.display = "block";
         // outputDiv.innerHTML = prompt;
 
@@ -108,7 +116,7 @@
         const textStream = generate(prompt, numTokens, 10, topK, temperature);
 
         for await (const text of textStream) {
-          outputDiv.innerHTML += text;
+          output.innerHTML += text;
         }
 
         setTextareaVisibility(false);
@@ -117,10 +125,11 @@
       }
 
       async function stopGeneration() {
-
+        // TODO: Implement this
       }
 
       async function loadModelHandler() {
+        initializeLoader();
         loadModelButton.disabled = true;
         loadGPT2ModelButton.disabled = true;
         modelParams = await loadModel("better_shakespeare");
@@ -134,6 +143,7 @@
       }
 
       async function loadGPT2ModelHandler() {
+        initializeLoader();
         loadModelButton.disabled = true;
         loadGPT2ModelButton.disabled = true;
         modelParams = await loadModel("gpt2");
@@ -149,7 +159,18 @@
         document.getElementById("temperatureInput").value = 1;
       }
 
+      function initializeLoader() {
+        const loader = document.getElementById("loading");
+        loader.style.display = "block";
+      }
+
+      function hideLoader() {
+        const loader = document.getElementById("loading");
+        loader.style.display = "none";
+      }
+
       function prepareUI(modelName) {
+        hideLoader();
         setTextareaVisibility(false);
         enableInputFields();
         setModelLabel(modelName);

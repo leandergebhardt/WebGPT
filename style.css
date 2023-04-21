@@ -30,7 +30,11 @@ $prefix: "mo-"; */
   display: none;
 }
 
-#output {
+#loaded-error {
+  display: none;
+}
+
+#output-wrapper {
   margin: 2rem auto;
   background: #545454;
   border-radius: 12px;
@@ -38,6 +42,16 @@ $prefix: "mo-"; */
   color: white;
   font-family: 'Nunito', sans-serif;
   display: none;
+  letter-spacing: .15em; /* Adjust as needed */
+}
+
+#output {
+  border-right: .15em solid white; 
+  width: fit-content;
+  margin: 0;/* The typwriter cursor */
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret .75s step-end infinite;    
 }
 
 .prompt-container {
@@ -51,4 +65,21 @@ $prefix: "mo-"; */
 
 .btn-grid {
   margin: 1rem !important;
+}
+
+#loading {
+  display: none;
+}
+
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: white; }
 }
