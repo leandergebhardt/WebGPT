@@ -17,7 +17,9 @@
   <body>
     <div class="intro-text">
       <h1>WebGPU GPT Model Demo</h1>
-      <p id="webgpuSupportMessage">Checking WebGPU support...</p>
+      <div class="alert" role="alert" id="webgpuSupportMessage">
+        Checking WebGPU support...
+      </div>
       <p>
         <i>PS: Loading models is 5x slower on the web rather than running locally. Just <a href="https://github.com/0hq/WebGPT">clone the repo</a> and open!</i>
       </p>
@@ -52,8 +54,9 @@
         <div class="row prompt-container">
           <div class="form-floating">
             <textarea 
-              class="form-control"
-              id="prompt" 
+              class="form-control prompt-textarea"
+              id="prompt"
+              rows="5" cols="50" 
               disabled >
             </textarea>
             <label for="prompt">Prompt</label>
@@ -81,9 +84,11 @@
       if (!navigator.gpu) {
         webgpuSupportMessage.innerHTML =
           "WebGPU is not supported in your browser yet. Update Chrome to v113 or download Chrome Canary here: <a href='https://www.google.com/chrome/canary/'>https://www.google.com/chrome/canary/</a>";
-        console.error("WebGPU is not supported");
+          webgpuSupportMessage.classList.add("alert-danger");
+          console.error("WebGPU is not supported");
       } else {
         webgpuSupportMessage.innerHTML = "WebGPU is supported in your browser!";
+        webgpuSupportMessage.classList.add("alert-success");
         loadModelButton.disabled = false;
         loadGPT2ModelButton.disabled = false;
       }
